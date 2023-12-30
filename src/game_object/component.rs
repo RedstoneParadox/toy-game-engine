@@ -2,10 +2,7 @@ use mlua::{FromLua, IntoLua, Lua, Value};
 use mlua::Value::Table;
 
 pub enum Component {
-    Messenger {
-        message: String,
-        has_sent: bool
-    }
+    Messenger(MessengerComponent)
 }
 
 impl IntoLua<'_> for Component {
@@ -16,9 +13,9 @@ impl IntoLua<'_> for Component {
         table.set("name", name)?;
 
         match self {
-            Component::Messenger { message, has_sent } => {
-                table.set("message", message)?;
-                table.set("has_sent", has_sent)?;
+            Component::Messenger(messenger) => {
+                table.set("message", messenger.message)?;
+                table.set("has_sent", messenger.has_sent)?;
             }
         }
 
@@ -36,7 +33,10 @@ impl FromLua<'_> for Component {
                     let message: String = table.get("message").unwrap_or_default();
                     let has_sent: bool = table.get("has_sent").unwrap_or_default();
 
-                    Ok(Component::Messenger {message, has_sent})
+                    Ok(Component::Messenger( MessengerComponent {
+                        message,
+                        has_sent
+                    }))
                 },
                 _ => Err(mlua::Error::FromLuaConversionError {
                     from: "",
@@ -56,7 +56,14 @@ impl FromLua<'_> for Component {
 
 impl Component {
     pub(crate) fn tick(&mut self) {
-
+        match self {
+            Component::Messenger(messenger) => {
+                if !messenger.has_sent {
+                    println!("{}", messenger.message)
+                }
+                messenger.has_sent = false
+            }
+        }
     }
 
     pub fn get_name(&self) -> String {
@@ -64,4 +71,9 @@ impl Component {
             Component::Messenger { .. } => "messenger",
         }.to_string()
     }
+}
+
+pub struct MessengerComponent {
+    message: String,
+    has_sent: bool
 }
