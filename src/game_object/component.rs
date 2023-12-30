@@ -74,6 +74,6 @@ impl Component {
 }
 
 pub struct MessengerComponent {
-    message: String,
-    has_sent: bool
+    pub(crate) message: String,
+    pub(crate) has_sent: bool
 }

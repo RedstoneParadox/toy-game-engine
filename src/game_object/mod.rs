@@ -1,4 +1,4 @@
-mod component;
+pub mod component;
 
 use mlua::{FromLua, IntoLua, Lua, Value};
 use mlua::prelude::LuaUserData;
@@ -7,13 +7,13 @@ use uuid::Uuid;
 use component::Component;
 
 pub struct GameObject {
-    name: String,
-    uuid: Uuid,
-    components: Vec<Component>
+    pub name: String,
+    pub uuid: Uuid,
+    pub components: Vec<Component>
 }
 
 impl GameObject {
-    fn new(name: String) -> GameObject {
+    pub(crate) fn new(name: String) -> GameObject {
         GameObject {
             name,
             uuid: Uuid::new_v4(),
