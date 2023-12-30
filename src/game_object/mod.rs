@@ -45,3 +45,33 @@ impl IntoLua<'_> for GameObject {
     }
 }
 
+impl FromLua<'_> for GameObject {
+    fn from_lua(value: Value<'_>, lua: &'_ Lua) -> mlua::Result<Self> {
+        if let Table(table) = value {
+            let name: String = table.get("name")?;
+            let uuid: Uuid = Uuid::from_u128(table.get("uuid")?);
+            let components_table: Value = table.get("components")?;
+            let mut components: Vec<Component> = vec![];
+
+            if let Table(table2) = components_table {
+                let components_sequence = table2.sequence_values::<Component>();
+                for component in components_sequence {
+                    components.push(component?)
+                }
+            }
+
+            return Ok(GameObject {
+                name,
+                uuid,
+                components
+            })
+        }
+
+        return Err(mlua::Error::FromLuaConversionError {
+            from: value.type_name(),
+            to: "GameObject",
+            message: None,
+        })
+    }
+}
+
