@@ -6,5 +6,5 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tealr = { version = "0.9.1", features = ["mlua_lua54","mlua_vendored"]}
+mlua = { version = "0.9.1", features = ["lua54", "vendored"] }
 uuid = { version = "1.4.1", features = ["v4"]}

@@ -1,5 +1,4 @@
-use tealr::mlu::mlua;
-use tealr::mlu::mlua::{FromLua, IntoLua, Lua, Value};
+use mlua::{FromLua, IntoLua, Lua, Value};
 use mlua::Value::Table;
 
 pub enum Component {
