@@ -1,5 +1,6 @@
 use std::fs;
-use mlua::prelude::*;
+use tealr::mlu::mlua::Lua;
+use tealr::mlu::mlua::prelude::LuaResult;
 use crate::game_object::component::{Component, MessengerComponent};
 use crate::game_object::GameObject;
 

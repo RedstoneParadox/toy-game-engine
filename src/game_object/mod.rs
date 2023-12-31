@@ -1,5 +1,6 @@
 pub mod component;
 
+use tealr::mlu::mlua;
 use mlua::{FromLua, IntoLua, Lua, Value};
 use mlua::prelude::LuaUserData;
 use mlua::Value::Table;
